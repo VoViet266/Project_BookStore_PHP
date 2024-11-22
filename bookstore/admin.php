@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="style.css">
 <?php
 session_start();
 
@@ -6,6 +8,14 @@ if (!isset($_SESSION['admin_logged_in'])) {
     header('Location: login.php');
     exit();
 }
+echo '<header>';
+echo '<blockquote>';
+    echo '<a href="index.php"><img src="image/logo.png"></a>';
+    echo '<form class="hf" action="index.php"><input class="hi" type="submit" name="submitButton" value="BackToHome"></form>';
+    echo '<form class="hf" action="logout.php"><input class="hi" type="submit" name="submitButton" value="Logout"></form>';
+    echo '<form class="hf" action="edituser.php"><input class="hi" type="submit" name="submitButton" value="Edit Profile"></form>';
+echo '</blockquote>';
+echo '</header>';
 
 // Database connection
 $servername = "localhost";

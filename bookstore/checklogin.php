@@ -15,6 +15,7 @@ if(isset($_POST['username'])&&isset($_POST['pwd'])){
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['role'] == 'admin'){
         $_SESSION['admin_logged_in'] = true;
+        $_SESSION['id']=$row['UserID'];
         // header("Location:admin.php");
     }
       
