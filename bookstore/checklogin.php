@@ -12,8 +12,13 @@ if(isset($_POST['username'])&&isset($_POST['pwd'])){
         ':username' => $username,
         ':pwd' => $pwd       
      ));
-    
-    if($stmt->rowCount()>0){
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row['role'] == 'admin'){
+        $_SESSION['admin_logged_in'] = true;
+        // header("Location:admin.php");
+    }
+      
+    if ($stmt->rowCount()>0 ){
         while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
             $_SESSION['id']=$row['UserID'];
              }

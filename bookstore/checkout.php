@@ -1,18 +1,20 @@
 <html>
+
 <body style="font-family:Arial; margin: 0 auto; background-color: #f2f2f2;">
-<header>
-<blockquote>
-	<img src="image/logo.png">
-	<input class="hi" style="float: right; margin: 2%;" type="button" name="cancel" value="Home" onClick="window.location='index.php';" />
-</blockquote>
-</header>
-<?php
+    <header>
+        <blockquote>
+            <img src="image/logo.png">
+            <input class="hi" style="float: right; margin: 2%;" type="button" name="cancel" value="Home"
+                onClick="window.location='index.php';" />
+        </blockquote>
+    </header>
+    <?php
 session_start();
 
 if(isset($_SESSION['id'])){
 	$servername = "localhost";
 	$username = "root";
-	$password = "";
+	$password = "mysql";
 
 	$conn = new mysqli($servername, $username, $password); 
 
@@ -50,20 +52,21 @@ if(isset($_SESSION['id'])){
 	echo '<div class="container">';
 	echo '<blockquote>';
 ?>
-<input class="button" style="float: right;" type="button" name="cancel" value="Continue Shopping" onClick="window.location='index.php';" />
-<?php
+    <input class="button" style="float: right;" type="button" name="cancel" value="Continue Shopping"
+        onClick="window.location='index.php';" />
+    <?php
 	echo '<h2 style="color: #000;">Order Successful</h2>';
 	echo "<table style='width:100%'>";
 	echo "<tr><th>Order Summary</th>";
 	echo "<th></th></tr>";
 	$row = $result->fetch_assoc();
-	echo "<tr><td>Name: </td><td>".$row['CustomerName']."</td></tr>";
-	echo "<tr><td>No.Number: </td><td>".$row['CustomerIC']."</td></tr>";
-	echo "<tr><td>E-mail: </td><td>".$row['CustomerEmail']."</td></tr>";
-	echo "<tr><td>Mobile Number: </td><td>".$row['CustomerPhone']."</td></tr>";
-	echo "<tr><td>Gender: </td><td>".$row['CustomerGender']."</td></tr>";
-	echo "<tr><td>Address: </td><td>".$row['CustomerAddress']."</td></tr>";
-	echo "<tr><td>Date: </td><td>".$row['DatePurchase']."</td></tr>";
+	echo "<tr><td>Name: </td><td>". ( empty($row['CustomerName']) ? "" : $row['CustomerName']) ."</td></tr>";
+	echo "<tr><td>No.Number: </td><td>" . (empty($row['CustomerIC']) ? "" : $row['CustomerIC']) . "</td></tr>";
+	echo "<tr><td>E-mail: </td><td>".(empty($row['CustomerEmail']) ? "" : $row['CustomerEmail'])."</td></tr>";
+	echo "<tr><td>Mobile Number: </td><td>".(empty($row['CustomerPhone']) ? "" : $row['CustomerPhone'])."</td></tr>";
+	echo "<tr><td>Gender: </td><td>".(empty($row['CustomerGender']) ? "" : $row['CustomerGender'])."</td></tr>";
+	echo "<tr><td>Address: </td><td>".(empty($row['CustomerAddress']) ? "" : $row['CustomerAddress'])."</td></tr>";
+	echo "<tr><td>Date: </td><td>".(empty($row['DatePurchase']) ? "" : $row['DatePurchase'])."</td></tr>";
 	echo "</blockquote>";
 
 	$sql = "SELECT customer.CustomerName, customer.CustomerIC, customer.CustomerGender, customer.CustomerAddress, customer.CustomerEmail, customer.CustomerPhone, book.BookTitle, book.Price, book.Image, `order`.`DatePurchase`, `order`.`Quantity`, `order`.`TotalPrice`
@@ -137,7 +140,7 @@ if(isset($_POST['submitButton'])){
 
 											$servername = "localhost";
 											$username = "root";
-											$password = "";
+											$password = "mysql";
 
 											$conn = new mysqli($servername, $username, $password); 
 
@@ -154,6 +157,7 @@ if(isset($_POST['submitButton'])){
  
 											$sql = "SELECT CustomerID from customer WHERE CustomerName = '".$name."' AND CustomerIC = '".$ic."'";
 											$result = $conn->query($sql);
+											
 											while($row = $result->fetch_assoc()){
 												$cID = $row['CustomerID'];
 											}
@@ -189,117 +193,136 @@ function test_input($data){
 	return $data;
 }
 ?>
-<style> 
-header {
-	background-color: rgb(0,51,102);
-	width: 100%;
-}
-header img {
-	margin: 1%;
-}
-header .hi{
-    background-color: #fff;
-    border: none;
-    border-radius: 20px;
-    text-align: center;
-    transition-duration: 0.5s; 
-    padding: 8px 30px;
-    cursor: pointer;
-    color: #000;
-    margin-top: 15%;
-}
-header .hi:hover{
-    background-color: #ccc;
-}
-form{
-	margin-top: 1%;
-	float: left;
-	width: 40%;
-	color: #000;
-}
-input[type=text] {
-	padding: 5px;
-    border-radius: 3px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    transition: 0.5s;
-    outline: none;
-}
-input[type=text]:focus {
-    border: 2px solid rgb(0,51,102);
-}
-textarea {
-	outline: none;
-	border: 2px solid #ccc;
-}
-textarea:focus {
-	border: 2px solid rgb(0,51,102);
-}
-.button{
-    background-color: rgb(0,51,102);
-    border: none;
-    border-radius: 20px;
-    text-align: center;
-    transition-duration: 0.5s; 
-    padding: 8px 30px;
-    cursor: pointer;
-    color: #fff;
-}
-.button:hover {
-    background-color: rgb(102,255,255);
-    color: #000;
-}
-table {
-    border-collapse: collapse;
-    width: 60%;
-    float: right;
-}
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-tr{background-color: #fff;}
+    <style>
+    header {
+        background-color: rgb(0, 51, 102);
+        width: 100%;
+    }
 
-th {
-    background-color: rgb(0,51,102);
-    color: white;
-}
-.container {
-	width: 50%;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-    margin: 0 auto;
-}
-</style>
-<blockquote>
-<?php
+    header img {
+        margin: 1%;
+    }
+
+    header .hi {
+        background-color: #fff;
+        border: none;
+        border-radius: 20px;
+        text-align: center;
+        transition-duration: 0.5s;
+        padding: 8px 30px;
+        cursor: pointer;
+        color: #000;
+        margin-top: 15%;
+    }
+
+    header .hi:hover {
+        background-color: #ccc;
+    }
+
+    form {
+        margin-top: 1%;
+        float: left;
+        width: 40%;
+        color: #000;
+    }
+
+    input[type=text] {
+        padding: 5px;
+        border-radius: 3px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        transition: 0.5s;
+        outline: none;
+    }
+
+    input[type=text]:focus {
+        border: 2px solid rgb(0, 51, 102);
+    }
+
+    textarea {
+        outline: none;
+        border: 2px solid #ccc;
+    }
+
+    textarea:focus {
+        border: 2px solid rgb(0, 51, 102);
+    }
+
+    .button {
+        background-color: rgb(0, 51, 102);
+        border: none;
+        border-radius: 20px;
+        text-align: center;
+        transition-duration: 0.5s;
+        padding: 8px 30px;
+        cursor: pointer;
+        color: #fff;
+    }
+
+    .button:hover {
+        background-color: rgb(102, 255, 255);
+        color: #000;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 60%;
+        float: right;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr {
+        background-color: #fff;
+    }
+
+    th {
+        background-color: rgb(0, 51, 102);
+        color: white;
+    }
+
+    .container {
+        width: 50%;
+        border-radius: 5px;
+        background-color: #f2f2f2;
+        padding: 20px;
+        margin: 0 auto;
+    }
+    </style>
+    <blockquote>
+        <?php
 if(!isset($_SESSION['id'])){
 	echo "<form method='post'  action=''>";
 
 	echo 'Name:<br><input type="text" name="name" placeholder="Full Name">';
 	echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr;?></span><br><br>';
 
-	echo 'IC Number:<br><input type="text" name="ic" placeholder="xxxxxx-xx-xxxx">';
-	echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $icErr;?></span><br><br>';
+        echo 'IC Number:<br><input type="text" name="ic" placeholder="xxxxxx-xx-xxxx">';
+        echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $icErr;?></span><br><br>';
 
-	echo 'E-mail:<br><input type="text" name="email" placeholder="example@email.com">';
-	echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr;?></span><br><br>';
+        echo 'E-mail:<br><input type="text" name="email" placeholder="example@email.com">';
+        echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr;?></span><br><br>';
 
-	echo 'Mobile Number:<br><input type="text" name="contact" placeholder="012-3456789">';
-	echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr;?></span><br><br>';
+        echo 'Mobile Number:<br><input type="text" name="contact" placeholder="012-3456789">';
+        echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr;?></span><br><br>';
 
-	echo '<label>Gender:</label><br>';
-	echo '<input type="radio" name="gender" if (isset($gender) && $gender == "Male") echo "checked"; value="Male">Male';
-	echo '<input type="radio" name="gender" if (isset($gender) && $gender == "Female") echo "checked"; value="Female">Female';
-	echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr;?></span><br><br>';
+        echo '<label>Gender:</label><br>';
+        echo '<input type="radio" name="gender" if (isset($gender) && $gender=="Male" ) echo "checked" ;
+            value="Male">Male';
+        echo '<input type="radio" name="gender" if (isset($gender) && $gender=="Female" ) echo "checked" ;
+            value="Female">Female';
+        echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr;?></span><br><br>';
 
-	echo '<label>Address:</label><br>';
-	   echo '<textarea name="address" cols="30" rows="5" placeholder="Address"></textarea>';
-	   echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr;?></span><br><br>';
-?>
-<input class="button" type="button" name="cancel" value="Cancel" onClick="window.location='index.php';" />
-<?php
+        echo '<label>Address:</label><br>';
+        echo '<textarea name="address" cols="30" rows="5" placeholder="Address"></textarea>';
+        echo '<span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr;?></span><br><br>';
+        ?>
+        <input class="button" type="button" name="cancel" value="Cancel" onClick="window.location='index.php';" />
+        <?php
 	echo '<input class="button" type="submit" name="submitButton" value="CHECKOUT">';
 	echo '</form><br><br>';
 }
@@ -307,7 +330,7 @@ if(!isset($_SESSION['id'])){
 if(isset($_POST['submitButton'])){
 	$servername = "localhost";
 	$username = "root";
-	$password = "";
+	$password = "mysql";
 
 	$conn = new mysqli($servername, $username, $password); 
 
@@ -355,6 +378,7 @@ if(isset($_POST['submitButton'])){
 	$conn->query($sql);
 }
 ?>
-</blockquote>
+    </blockquote>
 </body>
+
 </html>
