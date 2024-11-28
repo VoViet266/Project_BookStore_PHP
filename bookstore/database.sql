@@ -58,8 +58,8 @@ CREATE TABLE Cart(
 );
 
 
-INSERT INTO `Users`(`UserName`, `Password`, `role`) VALUES ('admin','admin','admin');
-INSERT INTO `Users`(`UserName`, `Password`, `role`) VALUES ('user','user','user');
+-- INSERT INTO `Users`(`UserName`, `Password`, `role`) VALUES ('admin','admin','admin');
+-- INSERT INTO `Users`(`UserName`, `Password`, `role`) VALUES ('user','user','user');
 
 
 INSERT INTO `book`(`BookID`, `BookTitle`, `ISBN`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-001','Lonely Planet Australia (Travel Guide)','123-456-789-1',136,'Lonely Planet','Travel','image/travel.jpg');

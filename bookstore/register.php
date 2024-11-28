@@ -1,98 +1,79 @@
 <?php
 session_start();
 $nameErr = $emailErr = $genderErr = $addressErr = $contactErr = $usernameErr = $passwordErr = "";
-$name = $email = $gender = $address = $contact = $uname = $upassword = "";
+$name = $email = $gender = $address = $contact = $name = $password = "";
 $cID;
+$servername = "localhost";
+$username = "root";
+$password = "mysql";
+
+$conn = new mysqli($servername, $username, $password);
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (empty($_POST["name"])) {
 		$nameErr = "Please enter your name";
 	} else {
+		$name = $_POST["name"];
+
 		if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
 			$nameErr = "Only letters and white space allowed";
-			$name = "";
-		} else {
-			$name = $_POST['name'];
-
-			if (empty($_POST["uname"])) {
-				$usernameErr = "Please enter your Username";
-				$uname = "";
-			} else {
-				$uname = $_POST['uname'];
-
-				if (empty($_POST["upassword"])) {
-					$passwordErr = "Please enter your Password";
-					$upassword = "";
-				} else {
-					$upassword = $_POST['upassword'];
-
-					if (empty($_POST["email"])) {
-						$emailErr = "Please enter your email address";
-					} else {
-						if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-							$emailErr = "Invalid email format";
-							$email = "";
-						} else {
-							$email = $_POST['email'];
-
-							if (empty($_POST["contact"])) {
-								$contactErr = "Please enter your phone number";
-							} else {
-								if (!preg_match("/^[0-9 -]*$/", $contact)) {
-									$contactErr = "Please enter a valid phone number";
-									$contact = "";
-								} else {
-									$contact = $_POST['contact'];
-
-									if (empty($_POST["gender"])) {
-										$genderErr = "* Gender is required!";
-										$gender = "";
-									} else {
-										$gender = $_POST['gender'];
-
-										if (empty($_POST["address"])) {
-											$addressErr = "Please enter your address";
-											$address = "";
-										} else {
-											$address = $_POST['address'];
-
-											$servername = "localhost";
-											$username = "root";
-											$password = "mysql";
-
-											$conn = new mysqli($servername, $username, $password);
-
-											if ($conn->connect_error) {
-												die("Connection failed: " . $conn->connect_error);
-											}
-
-											$sql = "USE bookstore";
-											$conn->query($sql);
-
-											$sql = "INSERT INTO users( UserName, Password) VALUES('" . $uname . "', '" . $upassword . "')";
-											$conn->query($sql);
-
-											$sql = "SELECT UserID FROM users WHERE UserName = '" . $uname . "'";
-											$result = $conn->query($sql);
-											while ($row = $result->fetch_assoc()) {
-												$id = $row['UserID'];
-											}
-
-											$sql = "INSERT INTO customer(CustomerName, CustomerPhone,  CustomerEmail, CustomerAddress, CustomerGender, UserID) 
-											VALUES('" . $name . "', '" . $contact . "', '" . $email . "', '" . $address . "', '" . $gender . "', " . $id . ")";
-											$conn->query($sql);
-
-											header("Location:index.php");
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
 		}
 	}
+	if (empty($_POST["email"])) {
+		$emailErr = "Please enter your email address";
+	} else {
+		$email = $_POST["email"];
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$emailErr = "Invalid email format";
+		}
+	}
+
+	if (empty($_POST["contact"])) {
+		$contactErr = "Please enter your phone number";
+	} else {
+		$contact = $_POST["contact"];
+		if (!preg_match("/^[0-9 -]*$/", $contact)) {
+			$contactErr = "Please enter a valid phone number";
+		}
+	}
+	if (empty($_POST["gender"])) {
+		$genderErr = "Gender is required";
+	} else {
+		$gender = $_POST['gender'];
+	}
+
+	if (empty($_POST["address"])) {
+		$addressErr = "Please enter your address";
+	} else {
+		$address = $_POST["address"];
+	}
+
+	if (empty($_POST["password"])) {
+		$passwordErr = "Please enter your password";
+	} else {
+		$password = $_POST["password"];
+	}
+
+	$sql = "USE bookstore";
+	$conn->query($sql);
+	$sql = "INSERT INTO users (UserName, Password) VALUES('$name', '$password')";
+	$conn->query($sql);
+
+	$sql = "SELECT UserID FROM users WHERE UserName = '$name' AND Password = '$password'";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0) {
+		while ($row = $result->fetch_assoc()) {
+			$id = $row['UserID'];
+		}
+		$sql = "INSERT INTO customer(CustomerName, CustomerPhone, CustomerEmail, CustomerAddress, CustomerGender, UserID) 
+			VALUES('$name', '$contact', '$email', '$address', '$gender', $id)";
+		$result = $conn->query($sql);
+		header("Location:login.php");
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+
 }
 function test_input($data)
 {
@@ -113,15 +94,12 @@ function test_input($data)
     </header>
     <blockquote>
         <div class="container">
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <form method="post" action="">
                 <h1>Register:</h1>
-                Full Name:<br><input type="text" name="name" placeholder="Full Name">
-                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
-
-                User Name:<br><input type="text" name="uname" placeholder="User Name">
+                User Name:<br><input type="text" name="name" placeholder="User Name">
                 <span class="error" style="color: red; font-size: 0.8em;"><?php echo $usernameErr; ?></span><br><br>
 
-                New Password:<br><input type="password" name="upassword" placeholder="Password">
+                Password:<br><input type="password" name="password" placeholder="Password">
                 <span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
 
                 E-mail:<br><input type="text" name="email" placeholder="example@email.com">
@@ -143,7 +121,7 @@ function test_input($data)
 
                 <input class="button" type="submit" name="submitButton" value="Submit">
                 <input class="button" type="button" name="cancel" value="Cancel"
-                    onClick="window.location='index.php';" />
+                    onClick="window.location='login.php';" />
             </form>
         </div>
     </blockquote>
