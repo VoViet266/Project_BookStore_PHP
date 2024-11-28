@@ -16,7 +16,7 @@ CREATE TABLE Users(
     UserID int not null AUTO_INCREMENT,
     UserName varchar(128),
     Password varchar(16),
-    role varchar(50) DEFAULT 'user',
+    role varchar(50) DEFAULT 'customer',
     PRIMARY KEY (UserID)
 );
 

@@ -26,38 +26,41 @@ header .hi {
   cursor: pointer;
   color: #000;
   font-weight: bold;
-  margin-top: 15%;
+  margin-top: 15px;
 }
 header .hi:hover {
   background-color: #ccc;
 }
-
-table {
+.table-orders {
+  width: 100%;
   border-collapse: collapse;
-}
-tr {
+  margin-bottom: 20px;
   background-color: #fff;
+  border-radius: 5px;
+  overflow: hidden;
 }
-th {
-  padding-top: 12px;
-  padding-bottom: 12px;
+
+.table-orders,
+.table-orders th,
+.table-orders td {
+  border: 1px solid #ddd;
+}
+
+.table-orders th,
+.table-orders td {
+  padding: 12px 15px;
   text-align: left;
-  background-color: rgb(0, 51, 102);
-  color: white;
 }
-table .btn {
-  background-color: #ec7115;
-  border: none;
+
+.table-orders th {
   text-align: center;
-  transition-duration: 0.5s;
-  padding: 8px 30px;
-  cursor: pointer;
-  color: #fff;
-  margin-top: 5%;
+  background-color: #f9f9f9;
+  font-weight: bold;
+  color: #555;
 }
-table .btn:hover {
-  background-color: #e3e3e3;
-  color: #ec7115;
+
+.table-orders tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
 .button {
