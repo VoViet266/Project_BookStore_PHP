@@ -65,6 +65,7 @@
 		echo '<form class="hf" action="admin.php"><input class="hi" type="submit" name="submitButton" value="Admin"></form>';
 		echo '<form class="hf" action="logout.php"><input class="hi" type="submit" name="submitButton" value="Logout"></form>';
 		echo '<form class="hf" action="edituser.php"><input class="hi" type="submit" name="submitButton" value="Edit Profile"></form>';
+		echo '<form class="hf" action="orders.php"><input class="hi" type="submit" name="submitButton" value="Xem đơn hàng"></form>';
 		echo '</blockquote>';
 		echo '</header>';
 
@@ -75,12 +76,14 @@
 		echo '<a href="index.php">
 	<img src="image/logo.png">
 	</a>';
+		
 		echo '<form class="hf" action="logout.php">
 	<input class="hi" type="submit" name="submitButton" value="Logout">
 	</form>';
 		echo '<form class="hf" action="edituser.php">
 	<input class="hi" type="submit" name="submitButton" value="Edit Profile">
 	</form>';
+		echo '<form class="hf" action="orders.php"><input class="hi" type="submit" name="submitButton" value="Xem đơn hàng"></form>';
 		echo '</blockquote>';
 		echo '</header>';
 	}
