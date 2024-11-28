@@ -1,0 +1,124 @@
+body {
+  font-family: Arial;
+  margin: 0 auto;
+  background-color: rgb(255, 255, 255);
+}
+header img {
+  margin: 1%;
+}
+
+.cbtn {
+  background-color: #fff;
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+  transition-duration: 0.5s;
+  padding: 8px 30px;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+.cbtn:hover {
+  background-color: #ccc;
+}
+.button {
+  background-color: rgb(0, 51, 102);
+  border: none;
+  border-radius: 20px;
+  text-align: center;
+  transition-duration: 0.5s;
+  padding: 8px 30px;
+  cursor: pointer;
+  color: #fff;
+  margin-top: 5%;
+  font-weight: bold;
+}
+.button:hover {
+  background-color: rgb(102, 255, 255);
+  color: #000;
+}
+#myTable {
+  width: 75%;
+  float: left;
+  padding: 0;
+  border-right: 1px solid #ddd;
+}
+
+#myTable li {
+  list-style-type: none;
+  margin: 10px;
+
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0.1, 0.3);
+  width: 235px;
+  height: 440px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+#myTable img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#myTable div {
+  padding: 5px;
+}
+
+#myTable .title {
+  height: 50px;
+  font-weight: bold;
+}
+
+#myTable .price {
+  float: right;
+}
+
+#myTable .quantity-input {
+  width: 20%;
+  border-radius: 15px;
+}
+
+.cart-container {
+  width: 20%;
+  float: right;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.cart-container h2 {
+  text-align: left;
+}
+
+.cart-container .cart-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.cart-container .remove-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-container .total {
+  text-align: right;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.cart-container .checkout-btn {
+  display: block;
+  margin: 0 auto;
+}

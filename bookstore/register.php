@@ -3,11 +3,8 @@ session_start();
 $nameErr = $emailErr = $genderErr = $addressErr = $contactErr = $usernameErr = $passwordErr = "";
 $name = $email = $gender = $address = $contact = $name = $password = "";
 $cID;
-$servername = "localhost";
-$username = "root";
-$password = "mysql";
 
-$conn = new mysqli($servername, $username, $password);
+include 'connectDB.php';
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -95,7 +92,9 @@ function test_input($data)
     <blockquote>
         <div class="container">
             <form method="post" action="">
-                <h1>Register:</h1>
+                <center>
+                    <h1>Register</h1>
+                </center>
                 User Name:<br><input type="text" name="name" placeholder="User Name">
                 <span class="error" style="color: red; font-size: 0.8em;"><?php echo $usernameErr; ?></span><br><br>
 

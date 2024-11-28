@@ -1,24 +1,8 @@
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="order.css">
 <?php
 session_start();
 
-echo '<header>';
-echo '<blockquote>';
-echo '<a href="index.php">
-	<img src="image/logo.png" alt="Logo">
-	</a>';
-
-echo '<form class="hf" action="logout.php" method="POST">
-	<input class="hi" type="submit" name="submitButton" value="Logout">
-	</form>';
-echo '<form class="hf" action="edituser.php" method="POST">
-	<input class="hi" type="submit" name="submitButton" value="Edit Profile">
-	</form>';
-echo '<form class="hf" action="index.php" method="GET">
-	<input class="hi" type="submit" name="submitButton" value="Back to home">
-	</form>';
-echo '</blockquote>';
-echo '</header>';
+include 'header.php';
 
 try {
     // Kết nối CSDL
@@ -34,23 +18,36 @@ try {
 
     if (isset($_SESSION['admin_logged_in'])) {
         $conn->query('USE bookstore');
-        $sql = "SELECT o.OrderID, b.BookTitle, o.Quantity, o.TotalPrice, o.DatePurchase, o.Status
+        $sql = "SELECT o.OrderID, b.BookTitle, o.Quantity, o.TotalPrice, o.DatePurchase, o.Status, o.CustomerID
                 FROM `Order` o
                 JOIN Book b ON o.BookID = b.BookID";
         $result = $conn->query($sql);
-    
+
         if ($result->num_rows > 0) {
             echo '<table class="table-orders">';
-            echo '<tr><th>Order ID</th><th>Book Title</th><th>Quantity</th><th>Total Price</th><th>Order Date</th><th>Status</th></tr>';
+            echo '<tr><th> Customer ID</th><th>Order ID</th><th>Book Title</th><th>Quantity</th><th>Total Price</th><th>Order Date</th><th>Status</th></tr>';
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
+                echo "<td>" . htmlspecialchars($row['CustomerID']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['BookTitle']) . "</td>"; // Hiển thị tiêu đề sách
                 echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                 echo "<td>" . number_format($row['TotalPrice'], 2) . " VNĐ</td>";
                 echo "<td>" . htmlspecialchars($row['DatePurchase']) . "</td>";
-                echo "<td>" . ($row['Status'] === '1' ? "Đã Xử Lý" : "Chưa Xử Lý") . "</td>";
+                // echo "<td>" . ($row['Status'] === '1' ? "Đã Xử Lý" : "Chưa Xử Lý") . "</td>";
+                echo '<td>
+                        <form method="POST" action="">
+                         <input type="hidden" name="OrderID" value="' . $row['OrderID'] . '">
+                              <input type="submit" name="submitButton" value="' . ($row['Status'] === '1' ? "Đã Xử Lý" : "Chưa Xử Lý") . '" style="background-color: ' . ($row['Status'] === '1' ? '#4CAF50' : '#FF0000') . '; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 10px;">
+                        </form>
+                </td>';
                 echo "</tr>";
+                if (isset($_POST['submitButton'])) {
+                    $OrderID = $_POST['OrderID'];
+
+                    $sql = "UPDATE `Order` SET Status = 1 WHERE OrderID = $OrderID";
+                    $conn->query($sql);
+                }
             }
             echo '</table>';
         } else {
@@ -58,8 +55,8 @@ try {
         }
     }
 
-    if (!isset($_SESSION['admin_logged_in']) && isset($_SESSION['id']) && !empty($_SESSION['id'])) {
-        $userId = intval($_SESSION['id']); 
+    if (!isset($_SESSION['admin_logged_in']) && isset($_SESSION['id'])) {
+        $userId = intval($_SESSION['id']);
         $stmt = $conn->prepare(
             "SELECT o.OrderID, o.DatePurchase, o.Quantity, o.TotalPrice, o.Status, b.BookTitle, c.CustomerName
              FROM `Order` o

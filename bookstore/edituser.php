@@ -2,17 +2,7 @@
 $nameErr = $emailErr = $genderErr = $addressErr = $contactErr = $usernameErr = $passwordErr = "";
 $name = $email = $gender = $address = $contact = $name = $password = "";
 session_start();
-
-$servername = "localhost";
-$username = "root";
-$password = "mysql";
-
-$conn = new mysqli($servername, $username, $password);
-if ($conn->connect_error) {
-	die("Connection failed: {$conn->connect_error}");
-}
-
-$conn->query("USE bookstore");
+include 'connectDB.php';
 
 $sql = "SELECT users.UserName, users.Password, customer.CustomerName, customer.CustomerEmail, customer.CustomerPhone, customer.CustomerGender, customer.CustomerAddress
 	FROM users, customer
@@ -87,45 +77,44 @@ function test_input($data)
 <link rel="stylesheet" href="style.css">
 
 <body>
-	<header>
-		<blockquote>
-			<a href="index.php"><img src="image/logo.png"></a>
-		</blockquote>
-	</header>
-	<blockquote>
-		<div class="container">
-			<form method="post" action="edituser.php">
-				<h1>Edit Profile:</h1>
+    <header>
+        <blockquote>
+            <a href="index.php"><img src="image/logo.png"></a>
+        </blockquote>
+    </header>
+    <blockquote>
+        <div class="container">
+            <form method="post" action="edituser.php">
+                <h1>Edit Profile:</h1>
 
-				User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
-				Password:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
+                User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
+                Password:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
 
-				E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr; ?></span><br><br>
+                E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr; ?></span><br><br>
 
-				Mobile Number:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
+                Mobile Number:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
 
-				<label>Gender:</label><br>
-				<input type="radio" name="gender" <?php if ($custGender == "Male")
+                <label>Gender:</label><br>
+                <input type="radio" name="gender" <?php if ($custGender == "Male")
 					echo "checked"; ?> value="Male">Male
-				<input type="radio" name="gender" <?php if ($custGender == "Female")
-					echo "checked"; ?>
-					value="Female">Female
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr; ?></span><br><br>
+                <input type="radio" name="gender" <?php if ($custGender == "Female")
+					echo "checked"; ?> value="Female">Female
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr; ?></span><br><br>
 
-				<label>Address:</label><br>
-				<textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
-				<input class="button" type="submit" name="submit" value="Submit" />
-				<input class="button" type="button" name="cancel" value="Cancel"
-					onClick="window.location='index.php';" />
-			</form>
-		</div>
+                <label>Address:</label><br>
+                <textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
+                <input class="button" type="submit" name="submit" value="Submit" />
+                <input class="button" type="button" name="cancel" value="Cancel"
+                    onClick="window.location='index.php';" />
+            </form>
+        </div>
 
-	</blockquote>
+    </blockquote>
 </body>
 
 </html>
