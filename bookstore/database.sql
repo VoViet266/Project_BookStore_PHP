@@ -24,7 +24,6 @@ CREATE TABLE Customer (
 	CustomerID int not null AUTO_INCREMENT,
     CustomerName varchar(128),
     CustomerPhone varchar(12),
-    CustomerIC varchar(14),
     CustomerEmail varchar(200),
     CustomerAddress varchar(200),
     CustomerGender varchar(10),
@@ -57,6 +56,10 @@ CREATE TABLE Cart(
     CONSTRAINT FOREIGN KEY (BookID) REFERENCES Book(BookID) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE SET NULL ON UPDATE CASCADE
 );
+
+
+INSERT INTO `Users`(`UserName`, `Password`, `role`) VALUES ('admin','admin','admin');
+INSERT INTO `Users`(`UserName`, `Password`, `role`) VALUES ('user','user','user');
 
 
 INSERT INTO `book`(`BookID`, `BookTitle`, `ISBN`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-001','Lonely Planet Australia (Travel Guide)','123-456-789-1',136,'Lonely Planet','Travel','image/travel.jpg');
