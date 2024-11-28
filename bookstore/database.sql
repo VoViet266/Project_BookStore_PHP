@@ -4,7 +4,6 @@ USE BookStore;
 CREATE TABLE Book(
     BookID varchar(50),
 	BookTitle varchar(200),
-    ISBN varchar(20),
     Price double(12,2),
     Author varchar(128),
     Type varchar(128),
@@ -16,7 +15,7 @@ CREATE TABLE Users(
     UserID int not null AUTO_INCREMENT,
     UserName varchar(128),
     Password varchar(16),
-    role varchar(50) DEFAULT 'user',
+    role varchar(50) DEFAULT 'customer',
     PRIMARY KEY (UserID)
 );
 
@@ -62,7 +61,7 @@ CREATE TABLE Cart(
 -- INSERT INTO `Users`(`UserName`, `Password`, `role`) VALUES ('user','user','user');
 
 
-INSERT INTO `book`(`BookID`, `BookTitle`, `ISBN`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-001','Lonely Planet Australia (Travel Guide)','123-456-789-1',136,'Lonely Planet','Travel','image/travel.jpg');
-INSERT INTO `book`(`BookID`, `BookTitle`, `ISBN`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-002','Crew Resource Management, Second Edition','123-456-789-2',599,'Barbara Kanki','Technical','image/technical.jpg');
-INSERT INTO `book`(`BookID`, `BookTitle`, `ISBN`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-003','CCNA Routing and Switching 200-125 Official Cert Guide Library','123-456-789-3',329,'Cisco Press ','Technology','image/technology.jpg');
-INSERT INTO `book`(`BookID`, `BookTitle`, `ISBN`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-004','Easy Vegetarian Slow Cooker Cookbook','123-456-789-4',75.9,'Rockridge Press','Food','image/food.jpg');
+INSERT INTO `book`(`BookID`, `BookTitle`,  `Price`, `Author`, `Type`, `Image`) VALUES ('B-001','Lonely Planet Australia (Travel Guide)','123-456-789-1',136,'Lonely Planet','Travel','image/travel.jpg');
+INSERT INTO `book`(`BookID`, `BookTitle`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-002','Crew Resource Management, Second Edition','123-456-789-2',599,'Barbara Kanki','Technical','image/technical.jpg');
+INSERT INTO `book`(`BookID`, `BookTitle`,  `Price`, `Author`, `Type`, `Image`) VALUES ('B-003','CCNA Routing and Switching 200-125 Official Cert Guide Library','123-456-789-3',329,'Cisco Press ','Technology','image/technology.jpg');
+INSERT INTO `book`(`BookID`, `BookTitle`, `Price`, `Author`, `Type`, `Image`) VALUES ('B-004','Easy Vegetarian Slow Cooker Cookbook','123-456-789-4',75.9,'Rockridge Press','Food','image/food.jpg');

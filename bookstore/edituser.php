@@ -9,7 +9,7 @@ $password = "mysql";
 
 $conn = new mysqli($servername, $username, $password);
 if ($conn->connect_error) {
-	die("Connection failed: " . $conn->connect_error);
+	die("Connection failed: {$conn->connect_error}");
 }
 
 $conn->query("USE bookstore");
@@ -73,12 +73,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	} else {
 		$password = $_POST["password"];
 	}
-
-
+	$conn->query("UPDATE users SET UserName = '$name', Password = '$password' WHERE UserID = {$_SESSION['id']}");
+	$conn->query("UPDATE customer SET CustomerName = '$name', CustomerPhone = '$contact', CustomerEmail = '$email', CustomerAddress = '$address', CustomerGender = '$gender' WHERE UserID = {$_SESSION['id']}");
+	header("Location: index.php");
 
 }
-
-
 function test_input($data)
 {
 	return htmlspecialchars(stripslashes(trim($data)));
@@ -95,7 +94,7 @@ function test_input($data)
 	</header>
 	<blockquote>
 		<div class="container">
-			<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+			<form method="post" action="edituser.php">
 				<h1>Edit Profile:</h1>
 
 				User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
@@ -123,8 +122,6 @@ function test_input($data)
 				<input class="button" type="submit" name="submit" value="Submit" />
 				<input class="button" type="button" name="cancel" value="Cancel"
 					onClick="window.location='index.php';" />
-
-
 			</form>
 		</div>
 
