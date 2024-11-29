@@ -75,11 +75,11 @@ $conn->close();
     <?php endif; ?>
 
     <form method="post" action="add_book.php">
-        <label>Title: <input type="text" name="title" required></label><br>
-        <label>Price: <input type="number" name="price" step="0.01" required></label><br>
-        <label>Author: <input type="text" name="author" required></label><br>
-        <label>Type: <input type="text" name="type" required></label><br>
-        <label>Image URL: <input type="text" name="image" required></label><br>
+        <label>Tiêu đề: <input type="text" name="title" required></label><br>
+        <label>Giá: <input type="number" name="price" step="0.01" required></label><br>
+        <label>Tác giả: <input type="text" name="author" required></label><br>
+        <label>Thể loại: <input type="text" name="type" required></label><br>
+        <label>Hình ảnh: <input type="text" name="image" required></label><br>
         <div class="button-add-container">
 
             <button type="submit" name="add_book">Thêm sách</button>

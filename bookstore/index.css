@@ -7,6 +7,10 @@ header img {
   margin: 1%;
 }
 
+label{
+  font-weight: bold;
+}
+
 .cbtn {
   background-color: #fff;
   border: none;

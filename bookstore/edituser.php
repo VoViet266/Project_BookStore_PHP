@@ -86,9 +86,9 @@ function test_input($data)
 
 
 <body>
-	<header>
+	<header style="height: 13%;">
 		<blockquote>
-			<a href="index.php"><img src="image/logo.png"></a>
+			<a href="index.php"><img style="margin: -0.3% 0 -0 -1.2%;" src="image/logo.png"></a>
 		</blockquote>
 	</header>
 	<blockquote>
@@ -103,12 +103,12 @@ function test_input($data)
 					<?php unset($_SESSION['message']); ?>
 				<?php endif; ?>
 				<center>
-					<h1>Edit Profile</h1>
+					<h1>Chỉnh sửa thông tin</h1>
 				</center>
 
 				User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
-				Password:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
+				Mật khẩu:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
 
 				E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
@@ -117,7 +117,7 @@ function test_input($data)
 				Mobile Number:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
 
-				<label>Gender:</label><br>
+				<label>Giới tính:</label><br>
 				<input type="radio" name="gender" <?php if ($custGender == "Male")
 					echo "checked"; ?> value="Male">Male
 				<input type="radio" name="gender" <?php if ($custGender == "Female")
@@ -125,11 +125,11 @@ function test_input($data)
 					value="Female">Female
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr; ?></span><br><br>
 
-				<label>Address:</label><br>
+				<label>Địa chỉ:</label><br>
 				<textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
-				<input class="button" type="submit" name="submit" value="Submit" />
-				<input class="button" type="button" name="cancel" value="Cancel"
+				<input class="button" type="submit" name="submit" value="Lưu" />
+				<input class="button" type="button" name="cancel" value="Hủy"
 					onClick="window.location='index.php';" />
 			</form>
 		</div>
