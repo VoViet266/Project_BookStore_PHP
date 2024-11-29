@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="style.css">
 <?php
 $nameErr = $emailErr = $genderErr = $addressErr = $contactErr = $usernameErr = $passwordErr = "";
 $name = $email = $gender = $address = $contact = $name = $password = "";
@@ -73,8 +74,7 @@ function test_input($data)
 	return htmlspecialchars(stripslashes(trim($data)));
 }
 ?>
-<html>
-<link rel="stylesheet" href="style.css">
+
 
 <body>
     <header>
@@ -85,8 +85,9 @@ function test_input($data)
     <blockquote>
         <div class="container">
             <form method="post" action="edituser.php">
-                <h1>Edit Profile:</h1>
-
+                <center>
+                    <h1>Edit Profile</h1>
+                </center>
                 User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
                 <span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
                 Password:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
@@ -116,5 +117,3 @@ function test_input($data)
 
     </blockquote>
 </body>
-
-</html>
