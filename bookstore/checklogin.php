@@ -11,6 +11,8 @@ if (isset($_POST['username']) && isset($_POST['pwd'])) {
     $stmt->execute(); // Thực thi truy vấn
     $result = $stmt->get_result(); // Lấy kết quả
 
+
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         // Kiểm tra vai trò của người dùng

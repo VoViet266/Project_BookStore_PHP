@@ -3,25 +3,16 @@
 session_start();
 
 include 'header.php';
-
+include 'connectDB.php';
 try {
-    // Kết nối CSDL
-    $servername = "localhost";
-    $username = "root";
-    $password = "mysql";
-    $dbname = "bookstore";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    if ($conn->connect_error) {
-        throw new Exception("Connection failed: " . $conn->connect_error);
-    }
-
-    if (isset($_SESSION['admin_logged_in'])) {
-        $conn->query('USE bookstore');
+    if (isset($_SESSION['admin_logged_in']) && isset($_SESSION['id']) && !isset($_SESSION['customer_logged_in'])) {
         $sql = "SELECT o.OrderID, b.BookTitle, o.Quantity, o.TotalPrice, o.DatePurchase, o.Status, o.CustomerID
-                FROM `Order` o
-                JOIN Book b ON o.BookID = b.BookID";
+                FROM `Orders` o
+                JOIN Book b ON o.BookID = b.BookID"
+                ;
+                
         $result = $conn->query($sql);
+        echo "<h2>Đơn Hàng</h2>";
 
         if ($result->num_rows > 0) {
             echo '<table class="table-orders">';
@@ -34,7 +25,6 @@ try {
                 echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                 echo "<td>" . number_format($row['TotalPrice'], 2) . " VNĐ</td>";
                 echo "<td>" . htmlspecialchars($row['DatePurchase']) . "</td>";
-                // echo "<td>" . ($row['Status'] === '1' ? "Đã Xử Lý" : "Chưa Xử Lý") . "</td>";
                 echo '<td>
                         <form method="POST" action="">
                          <input type="hidden" name="OrderID" value="' . $row['OrderID'] . '">
@@ -55,11 +45,12 @@ try {
         }
     }
 
-    if (!isset($_SESSION['admin_logged_in']) && isset($_SESSION['id'])) {
+    if (!isset($_SESSION['admin_logged_in']) && isset($_SESSION['id']) && isset($_SESSION['customer_logged_in'])) {
         $userId = intval($_SESSION['id']);
+        echo "<h2>Đơn Hàng Của Bạn</h2>";
         $stmt = $conn->prepare(
             "SELECT o.OrderID, o.DatePurchase, o.Quantity, o.TotalPrice, o.Status, b.BookTitle, c.CustomerName
-             FROM `Order` o
+             FROM `Orders` o
              JOIN Customer c ON o.CustomerID = c.CustomerID
              JOIN Book b ON o.BookID = b.BookID
              WHERE c.UserID = ?"

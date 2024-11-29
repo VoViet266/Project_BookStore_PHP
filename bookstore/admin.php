@@ -7,6 +7,7 @@ if (!isset($_SESSION['admin_logged_in'])) {
     header('Location: login.php');
     exit();
 }
+$message = "";
 include 'header.php';
 // Database connection
 include 'connectDB.php';
@@ -39,12 +40,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $author = $_POST['author'];
         $type = $_POST['type'];
         $image = $_POST['image'];
-        $sql = "UPDATE book SET BookTitle='$title', Price='$price', Author='$author', Type='$type', Image='$image' WHERE BookID='$id'";
-        $conn->query($sql);
+        $sql = "UPDATE book SET BookTitle='$title', Price='$price', Author='$author', Type='$type', Image='$image' WHERE BookID=?";
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt) {
+            $stmt->bind_param("s", $id);
+
+            if ($stmt->execute()) {
+                $_SESSION['message'] = ["type" => "success", "text" => "Cập nhật sách thành công!"];
+                header("Location: admin.php");
+                exit();
+            } else {
+                $_SESSION['message'] = ["type" => "error", "text" => "Lỗi khi cập nhật sách: {$stmt->error}"];
+            }
+            $stmt->close();
+        } else {
+            $_SESSION['message'] = ["type" => "error", "text" => "Lỗi chuẩn bị câu lệnh SQL: {$conn->error}"];
+        }
     } elseif (isset($_POST['delete_book'])) {
         $id = $_POST['BookID'];
-        $sql = "DELETE FROM book WHERE BookID='$id'";
-        $conn->query($sql);
+        $sql = "DELETE FROM book WHERE BookID=?";
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param("s", $id);
+
+            if ($stmt->execute()) {
+                $_SESSION['message'] = ["type" => "success", "text" => "Xóa sách thành công!"];
+                header("Location: admin.php");
+                exit();
+            } else {
+                $_SESSION['message'] = ["type" => "error", "text" => "Lỗi khi xóa sách: {$stmt->error}"];
+            }
+            $stmt->close();
+        } else {
+            $_SESSION['message'] = ["type" => "error", "text" => "Lỗi chuẩn bị câu lệnh SQL: {$conn->error}"];
+        }
     }
 }
 ?>
@@ -64,7 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <br>
     <a class="button-addbook" href="add_book.php">Thêm sách mới</a>
     <form class="search-form" method="get" action="">
-        <label style="margin: 30px 0 0 40px;" for="">Tìm kiếm sách: tìm theo mã sách, tên sách, tác giả và thể loại.</label>
+        <label style="margin: 30px 0 0 40px;" for="">Tìm kiếm sách: tìm theo mã sách, tên sách, tác giả và thể
+            loại.</label>
         <input type="text" name="search" placeholder="Tìm kiếm sách" value="<?= htmlspecialchars($search) ?>">
         <button type="submit">Tìm kiếm</button>
     </form>
@@ -92,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <td><?php echo $row['Type']; ?></td>
                     <td><img class="img_td" src="<?php echo $row['Image']; ?>" alt="Book Image"></td>
                     <td>
-                        <form method="post" class="inline-form" style="display: inline-block;">
+                        <form method="post" class="inline-form" style="display: inline-block;" action="admin.php">
                             <input type="text" name="title" value="<?php echo $row['BookTitle'] ?>" required>
                             <input type="number" name="price" value="<?php echo $row['Price']; ?>" required>
                             <input type="text" name="author" value="<?php echo $row['Author']; ?>" required>
@@ -101,13 +132,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
                             <button type="submit" name="edit_book">Edit</button>
                         </form>
-                        <form method="post" class="inline-btn" style="display: inline-block;">
+                        <form method="post" class="inline-btn" style="display: inline-block; " action="admin.php">
                             <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
                             <button type="submit" name="delete_book">Delete</button>
 
                         </form>
 
-                        </form>
                     </td>
                 </tr>
             <?php endwhile; ?>
@@ -127,12 +157,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!-- Ẩn thông báo trong 2 giây -->
 <script>
-    window.onload = function() {
+    window.onload = function () {
         const alert = document.querySelector('.alert');
         if (alert) {
-            setTimeout(function() {
+            setTimeout(function () {
                 alert.style.display = 'none';
-            }, 2000); 
+            }, 2000);
         }
     }
 </script>

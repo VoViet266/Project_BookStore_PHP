@@ -62,3 +62,4 @@ VALUES
 ('B-003', 'Tuổi trẻ đáng giá bao nhiêu', 90, 'Rosie Nguyễn', 'Kỹ năng sống', 'image/kynang1.jpg'),
 ('B-004', 'Đắc nhân tâm', 120, 'Dale Carnegie', 'Phát triển bản thân', 'image/phattrienbanthan.jpg'),
 ('B-005', 'Nhà giả kim', 130, 'Paulo Coelho', 'Văn học', 'image/vanhoc2.jpg');
+tyntyn
