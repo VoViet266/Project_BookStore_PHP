@@ -7,13 +7,13 @@ if (isset($_SESSION['admin_logged_in']) && !isset($_SESSION['customer_logged_in'
     <a href="index.php" class="header-img"><img src="image/logo.png" alt="Logo"></a>
     <nav>
         <form class="hf" action="admin.php">
-            <input class="hi" type="submit" name="submitButton" value="Admin">
+            <input class="hi" type="submit" name="submitButton" value="Trang quản lý">
         </form>
         <form class="hf" action="logout.php">
-            <input class="hi" type="submit" name="submitButton" value="Logout">
+            <input class="hi" type="submit" name="submitButton" value="Đăng xuất">
         </form>
         <form class="hf" action="edituser.php">
-            <input class="hi" type="submit" name="submitButton" value="Edit Profile">
+            <input class="hi" type="submit" name="submitButton" value="Sửa thông tin">
         </form>
         <form class="hf" action="orders.php">
             <input class="hi" type="submit" name="submitButton" value="Xem đơn hàng">

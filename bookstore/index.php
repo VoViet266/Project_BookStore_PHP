@@ -50,15 +50,15 @@
         <?php while ($row = $result->fetch_assoc()) { ?>
         <li>
             <img src="<?php echo $row["Image"]; ?>">
-            <div class="title"><strong>Title: <?php echo $row["BookTitle"]; ?></strong></div>
-            <div>Author: <?php echo $row["Author"]; ?></div>
-            <div>Type: <?php echo $row["Type"]; ?></div>
+            <div class="title"><strong>Tiêu đề: <?php echo $row["BookTitle"]; ?></strong></div>
+            <div>Tác giả: <?php echo $row["Author"]; ?></div>
+            <div>Thể loại: <?php echo $row["Type"]; ?></div>
             <div class="price"><?php echo $row["Price"]; ?> VNĐ</div>
             <div>
                 <form action="" method="post">
-                    Quantity: <input type="number" value="1" name="quantity" class="quantity-input" /><br>
+                    Số lượng: <input type="number" value="1" name="quantity" class="quantity-input" /><br>
                     <input type="hidden" value="<?php echo $row['BookID']; ?>" name="ac" />
-                    <input class="button" type="submit" value="Add to Cart" />
+                    <input class="button" type="submit" value="Thêm vào giỏ hàng" />
                 </form>
             </div>
         </li>
@@ -84,9 +84,9 @@
 		while ($row = $result->fetch_assoc()) { ?>
         <div class='cart-item'>
             <strong><?php echo $row['BookTitle']; ?></strong><br>
-            Price: <?php echo $row['Price']; ?> VNĐ<br>
-            Quantity: <?php echo $row['Quantity']; ?><br>
-            Total Price: <?php echo $row['TotalPrice']; ?> VNĐ
+            Giá: <?php echo $row['Price']; ?> VNĐ<br>
+            Số lượng: <?php echo $row['Quantity']; ?><br>
+            Số tiền: <?php echo $row['TotalPrice']; ?> VNĐ
             <form action='' method='post' style='float: right;'>
                 <input type='hidden' name='delItem' value='<?php echo $row['CartID']; ?>' />
                 <button type='submit' class='remove-btn'>Remove</button>
@@ -101,10 +101,11 @@
 		}
 		?>
         <div class='total'>
-            <strong>Total: <?php echo $total; ?> VNĐ</strong>
+            <strong>Tổng số tiền: <?php echo $total; ?> VNĐ</strong>
             <center>
                 <form action='checkout.php' method='post'>
-                    <input class='button checkout-btn' type='submit' name='checkout' value='CHECKOUT'>
+                    <br>
+                    <input class='button checkout-btn' type='submit' name='checkout' value='Đặt hàng'>
                 </form>
             </center>
         </div>

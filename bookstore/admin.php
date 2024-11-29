@@ -80,91 +80,91 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="container">
     <?php if (isset($_SESSION['message'])): ?>
-    <div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
-        <?= htmlspecialchars($_SESSION['message']['text']) ?>
-        <button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
-    </div>
-    <?php unset($_SESSION['message']); ?>
+        <div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
+            <?= htmlspecialchars($_SESSION['message']['text']) ?>
+            <button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
+        </div>
+        <?php unset($_SESSION['message']); ?>
     <?php endif; ?>
 
-    <h1 style="color: #FF6A6A;">Admin</h1>
-    <h2>Quản Lý Sách</h2>
+    <h1 style="color: #FF6A6A;">QUẢN LÝ SÁCH</h1>
 
     <hr>
     <br>
-    <a class="button-addbook" href="add_book.php">Thêm sách mới</a>
+    <div class="add-return-container">
+        <div><a class="button-addbook" href="add_book.php">Thêm sách mới</a></div>
+        <div><a class="return-button-1" href="index.php">Quay lại trang chủ</a></div>
+    </div>
+
     <form class="search-form" method="get" action="">
         <label style="margin: 30px 0 0 40px;" for="">Tìm kiếm sách: tìm theo mã sách, tên sách, tác giả và thể
             loại.</label>
         <input type="text" name="search" placeholder="Tìm kiếm sách" value="<?= htmlspecialchars($search) ?>">
         <button type="submit">Tìm kiếm</button>
     </form>
-    <hr style="margin-top: 40px;">
-
-    <h1>Danh sách</h1>
+    <hr style="margin-bottom: 30px;">
     <div style="padding-left: 40px;">
         <table>
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Price</th>
-                <th>Author</th>
-                <th>Type</th>
-                <th>Image</th>
-                <th>Actions</th>
+                <th>Mã sách</th>
+                <th>Tiêu đề</th>
+                <th>Giá</th>
+                <th>Tác giả</th>
+                <th>Thể loại</th>
+                <th>Hình ảnh</th>
+                <th>Hành động</th>
             </tr>
 
             <?php while ($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?php echo $row['BookID']; ?></td>
-                <td><?php echo $row['BookTitle']; ?></td>
-                <td><?php echo $row['Price']; ?></td>
-                <td><?php echo $row['Author']; ?></td>
-                <td><?php echo $row['Type']; ?></td>
-                <td><img class="img_td" src="<?php echo $row['Image']; ?>" alt="Book Image"></td>
-                <td>
-                    <form method="post" class="inline-form" style="display: inline-block;" action="admin.php">
-                        <input type="text" name="title" value="<?php echo $row['BookTitle'] ?>" required>
-                        <input type="number" name="price" value="<?php echo $row['Price']; ?>" required>
-                        <input type="text" name="author" value="<?php echo $row['Author']; ?>" required>
-                        <input type="text" name="type" value="<?php echo $row['Type']; ?>" required>
-                        <input type="text" name="image" value="<?php echo $row['Image']; ?>" required>
-                        <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
-                        <button type="submit" name="edit_book">Edit</button>
-                    </form>
-                    <form method="post" class="inline-btn" style="display: inline-block; " action="admin.php">
-                        <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
-                        <button type="submit" name="delete_book">Delete</button>
+                <tr>
+                    <td><?php echo $row['BookID']; ?></td>
+                    <td><?php echo $row['BookTitle']; ?></td>
+                    <td><?php echo $row['Price']; ?></td>
+                    <td><?php echo $row['Author']; ?></td>
+                    <td><?php echo $row['Type']; ?></td>
+                    <td><img class="img_td" src="<?php echo $row['Image']; ?>" alt="Book Image"></td>
+                    <td>
+                        <form method="post" class="inline-form" style="display: inline-block;" action="admin.php">
+                            <input type="text" name="title" value="<?php echo $row['BookTitle'] ?>" required>
+                            <input type="number" name="price" value="<?php echo $row['Price']; ?>" required>
+                            <input type="text" name="author" value="<?php echo $row['Author']; ?>" required>
+                            <input type="text" name="type" value="<?php echo $row['Type']; ?>" required>
+                            <input type="text" name="image" value="<?php echo $row['Image']; ?>" required>
+                            <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
+                            <button type="submit" name="edit_book">Edit</button>
+                        </form>
+                        <form method="post" class="inline-btn" style="display: inline-block; " action="admin.php">
+                            <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
+                            <button class="button-delete" type="submit" name="delete_book">Delete</button>
+                        </form>
 
-                    </form>
-
-                </td>
-            </tr>
+                    </td>
+                </tr>
             <?php endwhile; ?>
         </table>
     </div>
 </div>
 <script>
-document.querySelectorAll('form button[name="delete_book"]').forEach(button => {
-    button.addEventListener('click', (e) => {
-        if (!confirm("Bạn có chắc chắn muốn xóa cuốn sách này?")) {
-            e.preventDefault();
-        }
+    document.querySelectorAll('form button[name="delete_book"]').forEach(button => {
+        button.addEventListener('click', (e) => {
+            if (!confirm("Bạn có chắc chắn muốn xóa cuốn sách này?")) {
+                e.preventDefault();
+            }
+        });
     });
-});
 </script>
 
 
 <!-- Ẩn thông báo trong 2 giây -->
 <script>
-window.onload = function() {
-    const alert = document.querySelector('.alert');
-    if (alert) {
-        setTimeout(function() {
-            alert.style.display = 'none';
-        }, 2000);
+    window.onload = function() {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 2000);
+        }
     }
-}
 </script>
 
 <?php
