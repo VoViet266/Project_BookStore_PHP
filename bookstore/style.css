@@ -89,3 +89,53 @@ input[type="button"]:hover {
   margin: 20px auto;
   box-shadow: 0 2px 4px rgba(0, 0.1, 0.1, 0.3);
 }
+
+.alert {
+  padding: 10px;
+  width: 40%;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: auto; /* Align the alert to the right */
+  margin-right: 0;
+}
+
+.alert button.alert-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #000;
+  cursor: pointer;
+}
+
+.alert-success {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+.alert-error {
+  background-color: #dc3545; /* Red */
+  color: white;
+}
+
+.alert-info {
+  background-color: #17a2b8; /* Blue */
+  color: white;
+}
+
+.alert-warning {
+  background-color: #ffc107; /* Yellow */
+  color: black;
+}
+.return-button{
+  display: float;
+  padding: 10px 20px;
+  background-color: gray;
+  text-decoration: none;
+  color: white;
+  border-radius: 4px;
+}

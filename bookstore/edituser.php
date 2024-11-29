@@ -4,7 +4,7 @@ $nameErr = $emailErr = $genderErr = $addressErr = $contactErr = $usernameErr = $
 $name = $email = $gender = $address = $contact = $name = $password = "";
 session_start();
 include 'connectDB.php';
-
+$message = "";
 $sql = "SELECT users.UserName, users.Password, customer.CustomerName, customer.CustomerEmail, customer.CustomerPhone, customer.CustomerGender, customer.CustomerAddress
 	FROM users, customer
 	WHERE users.UserID = customer.UserID AND users.UserID = " . $_SESSION['id'];
@@ -64,9 +64,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	} else {
 		$password = $_POST["password"];
 	}
+
 	$conn->query("UPDATE users SET UserName = '$name', Password = '$password' WHERE UserID = {$_SESSION['id']}");
-	$conn->query("UPDATE customer SET CustomerName = '$name', CustomerPhone = '$contact', CustomerEmail = '$email', CustomerAddress = '$address', CustomerGender = '$gender' WHERE UserID = {$_SESSION['id']}");
-	header("Location: index.php");
+	$result = $conn->query("UPDATE customer SET CustomerName = '$name', CustomerPhone = '$contact', CustomerEmail = '$email', CustomerAddress = '$address', CustomerGender = '$gender' WHERE UserID = {$_SESSION['id']}");
+
+	if ($result) {
+		$_SESSION['message'] = ["type" => "success", "text" => "Cập nhật thành công!!"];
+		header("Location: edituser.php");
+		exit();
+	} else {
+		$_SESSION['message'] = ["type" => "error", "text" => "Cập nhật thất bại!!!" . $conn->error];
+	}
+
 
 }
 function test_input($data)
@@ -77,43 +86,63 @@ function test_input($data)
 
 
 <body>
-    <header>
-        <blockquote>
-            <a href="index.php"><img src="image/logo.png"></a>
-        </blockquote>
-    </header>
-    <blockquote>
-        <div class="container">
-            <form method="post" action="edituser.php">
-                <center>
-                    <h1>Edit Profile</h1>
-                </center>
-                User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
-                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
-                Password:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
-                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
+	<header>
+		<blockquote>
+			<a href="index.php"><img src="image/logo.png"></a>
+		</blockquote>
+	</header>
+	<blockquote>
+		<div class="container">
+			<form method="post" action="edituser.php">
 
-                E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
-                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr; ?></span><br><br>
+				<?php if (isset($_SESSION['message'])): ?>
+					<div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
+						<?= htmlspecialchars($_SESSION['message']['text']) ?>
+						<button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
+					</div>
+					<?php unset($_SESSION['message']); ?>
+				<?php endif; ?>
+				<center>
+					<h1>Edit Profile</h1>
+				</center>
 
-                Mobile Number:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
-                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
+				User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
+				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
+				Password:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
+				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
 
-                <label>Gender:</label><br>
-                <input type="radio" name="gender" <?php if ($custGender == "Male")
+				E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
+				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr; ?></span><br><br>
+
+				Mobile Number:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
+				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
+
+				<label>Gender:</label><br>
+				<input type="radio" name="gender" <?php if ($custGender == "Male")
 					echo "checked"; ?> value="Male">Male
-                <input type="radio" name="gender" <?php if ($custGender == "Female")
-					echo "checked"; ?> value="Female">Female
-                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr; ?></span><br><br>
+				<input type="radio" name="gender" <?php if ($custGender == "Female")
+					echo "checked"; ?>
+					value="Female">Female
+				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr; ?></span><br><br>
 
-                <label>Address:</label><br>
-                <textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
-                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
-                <input class="button" type="submit" name="submit" value="Submit" />
-                <input class="button" type="button" name="cancel" value="Cancel"
-                    onClick="window.location='index.php';" />
-            </form>
-        </div>
+				<label>Address:</label><br>
+				<textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
+				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
+				<input class="button" type="submit" name="submit" value="Submit" />
+				<input class="button" type="button" name="cancel" value="Cancel"
+					onClick="window.location='index.php';" />
+			</form>
+		</div>
 
-    </blockquote>
+	</blockquote>
 </body>
+<script>
+	window.onload = function () {
+		const alert = document.querySelector('.alert');
+		if (alert) {
+			setTimeout(function () {
+				alert.style.display = 'none';
+			}, 2000);
+		}
+	}
+</script>

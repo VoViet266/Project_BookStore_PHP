@@ -80,11 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 <div class="container">
     <?php if (isset($_SESSION['message'])): ?>
-        <div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
-            <?= htmlspecialchars($_SESSION['message']['text']) ?>
-            <button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
-        </div>
-        <?php unset($_SESSION['message']); ?>
+    <div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
+        <?= htmlspecialchars($_SESSION['message']['text']) ?>
+        <button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
+    </div>
+    <?php unset($_SESSION['message']); ?>
     <?php endif; ?>
 
     <h1 style="color: #FF6A6A;">Admin</h1>
@@ -115,56 +115,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
 
             <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $row['BookID']; ?></td>
-                    <td><?php echo $row['BookTitle']; ?></td>
-                    <td><?php echo $row['Price']; ?></td>
-                    <td><?php echo $row['Author']; ?></td>
-                    <td><?php echo $row['Type']; ?></td>
-                    <td><img class="img_td" src="<?php echo $row['Image']; ?>" alt="Book Image"></td>
-                    <td>
-                        <form method="post" class="inline-form" style="display: inline-block;" action="admin.php">
-                            <input type="text" name="title" value="<?php echo $row['BookTitle'] ?>" required>
-                            <input type="number" name="price" value="<?php echo $row['Price']; ?>" required>
-                            <input type="text" name="author" value="<?php echo $row['Author']; ?>" required>
-                            <input type="text" name="type" value="<?php echo $row['Type']; ?>" required>
-                            <input type="text" name="image" value="<?php echo $row['Image']; ?>" required>
-                            <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
-                            <button type="submit" name="edit_book">Edit</button>
-                        </form>
-                        <form method="post" class="inline-btn" style="display: inline-block; " action="admin.php">
-                            <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
-                            <button type="submit" name="delete_book">Delete</button>
+            <tr>
+                <td><?php echo $row['BookID']; ?></td>
+                <td><?php echo $row['BookTitle']; ?></td>
+                <td><?php echo $row['Price']; ?></td>
+                <td><?php echo $row['Author']; ?></td>
+                <td><?php echo $row['Type']; ?></td>
+                <td><img class="img_td" src="<?php echo $row['Image']; ?>" alt="Book Image"></td>
+                <td>
+                    <form method="post" class="inline-form" style="display: inline-block;" action="admin.php">
+                        <input type="text" name="title" value="<?php echo $row['BookTitle'] ?>" required>
+                        <input type="number" name="price" value="<?php echo $row['Price']; ?>" required>
+                        <input type="text" name="author" value="<?php echo $row['Author']; ?>" required>
+                        <input type="text" name="type" value="<?php echo $row['Type']; ?>" required>
+                        <input type="text" name="image" value="<?php echo $row['Image']; ?>" required>
+                        <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
+                        <button type="submit" name="edit_book">Edit</button>
+                    </form>
+                    <form method="post" class="inline-btn" style="display: inline-block; " action="admin.php">
+                        <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
+                        <button type="submit" name="delete_book">Delete</button>
 
-                        </form>
+                    </form>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
             <?php endwhile; ?>
         </table>
     </div>
 </div>
 <script>
-    document.querySelectorAll('form button[name="delete_book"]').forEach(button => {
-        button.addEventListener('click', (e) => {
-            if (!confirm("Bạn có chắc chắn muốn xóa cuốn sách này?")) {
-                e.preventDefault();
-            }
-        });
+document.querySelectorAll('form button[name="delete_book"]').forEach(button => {
+    button.addEventListener('click', (e) => {
+        if (!confirm("Bạn có chắc chắn muốn xóa cuốn sách này?")) {
+            e.preventDefault();
+        }
     });
+});
 </script>
 
 
 <!-- Ẩn thông báo trong 2 giây -->
 <script>
-    window.onload = function () {
-        const alert = document.querySelector('.alert');
-        if (alert) {
-            setTimeout(function () {
-                alert.style.display = 'none';
-            }, 2000);
-        }
+window.onload = function() {
+    const alert = document.querySelector('.alert');
+    if (alert) {
+        setTimeout(function() {
+            alert.style.display = 'none';
+        }, 2000);
     }
+}
 </script>
 
 <?php
