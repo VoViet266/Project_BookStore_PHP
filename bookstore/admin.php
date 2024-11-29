@@ -48,11 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
-
 <div class="container">
+    <?php if (isset($_SESSION['message'])): ?>
+        <div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
+            <?= htmlspecialchars($_SESSION['message']['text']) ?>
+            <button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
+        </div>
+        <?php unset($_SESSION['message']); ?>
+    <?php endif; ?>
+
     <h1 style="color: #FF6A6A;">Admin</h1>
     <h2>Quản Lý Sách</h2>
-    <!-- --------------------------------------------------------------------------------- -->
+
     <hr>
     <br>
     <a class="button-addbook" href="add_book.php">Thêm sách mới</a>
@@ -117,6 +124,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     });
 </script>
 
+
+<!-- Ẩn thông báo trong 2 giây -->
+<script>
+    window.onload = function() {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 2000); 
+        }
+    }
+</script>
 
 <?php
 $conn->close();
