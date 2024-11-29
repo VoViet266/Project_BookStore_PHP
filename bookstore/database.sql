@@ -55,6 +55,9 @@ CREATE TABLE Cart (
     CONSTRAINT FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+INSERT INTO Users (UserName, Password, role) VALUES ('admin', 'admin', 'admin');
+INSERT INTO Users (UserName, Password, role) VALUES ('customer', 'customer', 'customer');
+
 INSERT INTO Book (BookID, BookTitle, Price, Author, Type, Image)
 VALUES 
 ('B-001', 'Những người khốn khổ', 200, 'Victor Hugo', 'Văn học', 'image/vanhoc1.jpg'),
