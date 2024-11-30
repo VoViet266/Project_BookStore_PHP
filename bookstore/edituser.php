@@ -114,7 +114,7 @@ function test_input($data)
 				E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr; ?></span><br><br>
 
-				Mobile Number:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
+				Số điện thoại:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
 
 				<label>Giới tính:</label><br>

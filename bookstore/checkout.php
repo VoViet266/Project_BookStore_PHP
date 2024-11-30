@@ -46,9 +46,9 @@
 
 
     <div class="container">
-        <input class="button" style="float: right;" type="button" name="cancel" value="Continue Shopping"
+        <input class="button" style="float: right;" type="button" name="cancel" value="Tiếp tục mua sắm"
             onClick="window.location='index.php';" />
-        <h2 style="color: #000;">Order Successful</h2>
+        <h2 style="color: #000;">Đặt hàng thành công.</h2>
         <div class="sp" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
             <?php
                 $total = 0;
@@ -56,8 +56,8 @@
             <div class='product '>
                 <img src='<?php echo $row['Image']; ?>' alt='<?php echo $row['BookTitle']; ?> '>
                 <p style="margin: 0; font-weight: bold; ">Title: <?php echo $row['BookTitle']; ?></p>
-                <p style="margin: 3px 0;">Price: RM<?php echo $row['Price']; ?></p>
-                <p style="margin: 3px 0;">Quantity: <?php echo $row['Quantity']; ?></p>
+                <p style="margin: 3px 0;">Giá: <?php echo $row['Price']; ?> VNĐ</p>
+                <p style="margin: 3px 0;">Số lượng: <?php echo $row['Quantity']; ?></p>
 
 
             </div>
@@ -77,11 +77,11 @@
     <table>
         <tr>
 
-            <th>Order Summary</th>
+            <th>Thông tin đặt hàng</th>
             <th></th>
         </tr>
         <tr>
-            <td>Name: </td>
+            <td>Tên: </td>
             <td><?php echo empty($row['CustomerName']) ? "" : $row['CustomerName']; ?></td>
         </tr>
         <tr>
@@ -89,15 +89,15 @@
             <td><?php echo empty($row['CustomerEmail']) ? "" : $row['CustomerEmail']; ?></td>
         </tr>
         <tr>
-            <td>Mobile Number: </td>
+            <td>Số điện thoại: </td>
             <td><?php echo empty($row['CustomerPhone']) ? "" : $row['CustomerPhone']; ?></td>
         </tr>
         <tr>
-            <td>Gender: </td>
+            <td>Giới tính: </td>
             <td><?php echo empty($row['CustomerGender']) ? "" : $row['CustomerGender']; ?></td>
         </tr>
         <tr>
-            <td>Address: </td>
+            <td>Địa chỉ: </td>
             <td><?php echo empty($row['CustomerAddress']) ? "" : $row['CustomerAddress']; ?></td>
         </tr>
         <?php
@@ -108,12 +108,12 @@
             $row = $result->fetch_assoc();
             ?>
         <tr>
-            <td>Date: </td>
+            <td>Ngày đặt: </td>
             <td><?php echo empty($row['DatePurchase']) ? "" : $row['DatePurchase']; ?></td>
         </tr>
         <tr>
-            <td>Total Price: </td>
-            <td>RM<?php echo $total; ?></td>
+            <td>Tổng số tiền: </td>
+            <td><?php echo $total; ?> VNĐ</td>
     </table>
     <?php
         $sql = "UPDATE `orders` SET Status = '1' WHERE CustomerID = " . $cID . "";

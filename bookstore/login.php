@@ -10,12 +10,12 @@
     <blockquote>
         <div class="container">
             <center>
-                <h1>Login</h1>
+                <h1>Đăng Nhập</h1>
             </center>
             <form action="checklogin.php" method="post">
                 Username:<br><input type="text" name="username" />
                 <br><br>
-                Password:<br><input type="password" name="pwd" />
+                Mật khẩu:<br><input type="password" name="pwd" />
                 <?php
                 if (isset($_GET['errcode'])) {
                     $errorMessages = [
