@@ -63,9 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$passwordErr = "Please enter your password";
 	} else {
 		$password = $_POST["password"];
+		$hashed_password = password_hash($password, PASSWORD_BCRYPT);
 	}
 
-	$conn->query("UPDATE users SET UserName = '$name', Password = '$password' WHERE UserID = {$_SESSION['id']}");
+	$conn->query("UPDATE users SET UserName = '$name', Password = '$hashed_password' WHERE UserID = {$_SESSION['id']}");
 	$result = $conn->query("UPDATE customer SET CustomerName = '$name', CustomerPhone = '$contact', CustomerEmail = '$email', CustomerAddress = '$address', CustomerGender = '$gender' WHERE UserID = {$_SESSION['id']}");
 
 	if ($result) {
@@ -129,8 +130,7 @@ function test_input($data)
 				<textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
 				<input class="button" type="submit" name="submit" value="Lưu" />
-				<input class="button" type="button" name="cancel" value="Hủy"
-					onClick="window.location='index.php';" />
+				<input class="button" type="button" name="cancel" value="Hủy" onClick="window.location='index.php';" />
 			</form>
 		</div>
 
