@@ -2,74 +2,85 @@
 <?php
 session_start();
 $nameErr = $emailErr = $genderErr = $addressErr = $contactErr = $usernameErr = $passwordErr = "";
-$name = $email = $gender = $address = $contact = $name = $password = "";
+$name = $email = $gender = $address = $contact = $name = $password = $hashed_password = "";
 $cID;
 
 include 'connectDB.php';
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$valid = true;
+
 	if (empty($_POST["name"])) {
 		$nameErr = "Please enter your name";
+		$valid = false;
 	} else {
 		$name = $_POST["name"];
-
 		if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
 			$nameErr = "Only letters and white space allowed";
+			$valid = false;
 		}
 	}
+
 	if (empty($_POST["email"])) {
 		$emailErr = "Please enter your email address";
+		$valid = false;
 	} else {
 		$email = $_POST["email"];
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$emailErr = "Invalid email format";
+			$valid = false;
 		}
 	}
 
 	if (empty($_POST["contact"])) {
 		$contactErr = "Please enter your phone number";
+		$valid = false;
 	} else {
 		$contact = $_POST["contact"];
 		if (!preg_match("/^[0-9 -]*$/", $contact)) {
 			$contactErr = "Please enter a valid phone number";
+			$valid = false;
 		}
 	}
+
 	if (empty($_POST["gender"])) {
 		$genderErr = "Gender is required";
+		$valid = false;
 	} else {
 		$gender = $_POST['gender'];
 	}
 
 	if (empty($_POST["address"])) {
 		$addressErr = "Please enter your address";
+		$valid = false;
 	} else {
 		$address = $_POST["address"];
 	}
 
 	if (empty($_POST["password"])) {
 		$passwordErr = "Please enter your password";
+		$valid = false;
 	} else {
 		$password = $_POST["password"];
 		$hashed_password = password_hash($password, PASSWORD_BCRYPT); // Hash the password
 	}
 
-	$sql = "USE bookstore";
-	$conn->query($sql);
-	$sql = "INSERT INTO users (UserName, Password) VALUES('$name', '$hashed_password')"; // Store hashed password
-	$conn->query($sql);
+	if ($valid) {
+		$sql = "INSERT INTO users (UserName, Password) VALUES('$name', '$hashed_password')"; // Store hashed password
+		$conn->query($sql);
 
-	$sql = "SELECT UserID FROM users WHERE UserName = '$name'";
-	$result = $conn->query($sql);
-	if ($result->num_rows > 0) {
-		while ($row = $result->fetch_assoc()) {
-			$id = $row['UserID'];
-		}
-		$sql = "INSERT INTO customer(CustomerName, CustomerPhone, CustomerEmail, CustomerAddress, CustomerGender, UserID) 
-			VALUES('$name', '$contact', '$email', '$address', '$gender', $id)";
+		$sql = "SELECT UserID FROM users WHERE UserName = '$name'";
 		$result = $conn->query($sql);
-		header("Location:login.php");
-	} else {
-		echo "Error: " . $sql . "<br>" . $conn->error;
+		if ($result->num_rows > 0) {
+			while ($row = $result->fetch_assoc()) {
+				$id = $row['UserID'];
+			}
+			$sql = "INSERT INTO customer(CustomerName, CustomerPhone, CustomerEmail, CustomerAddress, CustomerGender, UserID) 
+				VALUES('$name', '$contact', '$email', '$address', '$gender', $id)";
+			$result = $conn->query($sql);
+			header("Location:login.php");
+		} else {
+			echo "Error: " . $sql . "<br>" . $conn->error;
+		}
 	}
 }
 function test_input($data)
@@ -118,7 +129,8 @@ function test_input($data)
                 <textarea name="address" cols="50" rows="5" placeholder="Address"></textarea>
                 <span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
 
-                <input class="button" type="submit" name="submitButton" value="Submit">
+                <input class="button" type="submit" name="submitButton" value="Submit"
+                    onClick="window.location='login.php';">
                 <input class="button" type="button" name="cancel" value="Cancel"
                     onClick="window.location='login.php';" />
             </form>

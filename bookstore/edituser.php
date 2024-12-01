@@ -19,66 +19,76 @@ while ($row = $result->fetch_assoc()) {
 	$custAddress = $row['CustomerAddress'];
 
 }
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+	$valid = true;
 	if (empty($_POST["name"])) {
 		$nameErr = "Please enter your name";
+		$valid = false;
 	} else {
 		$name = $_POST["name"];
-
 		if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
 			$nameErr = "Only letters and white space allowed";
+			$valid = false;
 		}
 	}
 	if (empty($_POST["email"])) {
 		$emailErr = "Please enter your email address";
+		$valid = false;
 	} else {
 		$email = $_POST["email"];
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$emailErr = "Invalid email format";
+			$valid = false;
 		}
 	}
 
 	if (empty($_POST["contact"])) {
 		$contactErr = "Please enter your phone number";
+		$valid = false;
 	} else {
 		$contact = $_POST["contact"];
 		if (!preg_match("/^[0-9 -]*$/", $contact)) {
 			$contactErr = "Please enter a valid phone number";
+			$valid = false;
 		}
 	}
 	if (empty($_POST["gender"])) {
 		$genderErr = "Gender is required";
+		$valid = false;
 	} else {
 		$gender = $_POST['gender'];
 	}
 
 	if (empty($_POST["address"])) {
 		$addressErr = "Please enter your address";
+		$valid = false;
 	} else {
 		$address = $_POST["address"];
 	}
 
 	if (empty($_POST["password"])) {
 		$passwordErr = "Please enter your password";
+		$valid = false;
 	} else {
 		$password = $_POST["password"];
-		$hashed_password = password_hash($password, PASSWORD_BCRYPT);
+		$hashed_password = password_hash($password, PASSWORD_BCRYPT); // Hash the password
 	}
 
-	$conn->query("UPDATE users SET UserName = '$name', Password = '$hashed_password' WHERE UserID = {$_SESSION['id']}");
-	$result = $conn->query("UPDATE customer SET CustomerName = '$name', CustomerPhone = '$contact', CustomerEmail = '$email', CustomerAddress = '$address', CustomerGender = '$gender' WHERE UserID = {$_SESSION['id']}");
+	if ($valid) {
+		$conn->query("UPDATE users SET UserName = '$name', Password = '$hashed_password' WHERE UserID = {$_SESSION['id']}");
+		$result = $conn->query("UPDATE customer SET CustomerName = '$name', CustomerPhone = '$contact', CustomerEmail = '$email', CustomerAddress = '$address', CustomerGender = '$gender' WHERE UserID = {$_SESSION['id']}");
 
-	if ($result) {
-		$_SESSION['message'] = ["type" => "success", "text" => "Cập nhật thành công!!"];
-		header("Location: edituser.php");
-		exit();
-	} else {
-		$_SESSION['message'] = ["type" => "error", "text" => "Cập nhật thất bại!!!" . $conn->error];
+		if ($result) {
+			$_SESSION['message'] = ["type" => "success", "text" => "Cập nhật thành công!!"];
+			header("Location: edituser.php");
+			exit();
+		} else {
+			$_SESSION['message'] = ["type" => "error", "text" => "Cập nhật thất bại!!!" . $conn->error];
+		}
 	}
-
-
 }
+
 function test_input($data)
 {
 	return htmlspecialchars(stripslashes(trim($data)));
@@ -109,7 +119,7 @@ function test_input($data)
 
 				User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
-				Mật khẩu:<br><input type="password" name="password" value="<?php echo $userPassword; ?>">
+				Mật khẩu:<br><input type="password" name="password" placeholder="Mật khẩu mới">
 				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
 
 				E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
