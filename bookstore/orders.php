@@ -13,15 +13,15 @@ try {
                 
         $result = $conn->query($sql);
         echo "<h2>Đơn Hàng</h2>";
-
+        echo "<a style='margin-left: 40px;' class='return-button' href='index.php'>Quay lại trang chủ</a>";
         if ($result->num_rows > 0) {
-            echo '<table class="table-orders">';
-            echo '<tr><th> Customer ID</th><th>Order ID</th><th>Book Title</th><th>Quantity</th><th>Total Price</th><th>Order Date</th><th>Status</th></tr>';
+            echo '<table style="margin-top: 30px;" class="table-orders">';
+            echo '<tr><th> Mã khách hàng</th><th>Mã đơn hàng</th><th>Tên sách</th><th>Số lượng</th><th>Số tiền</th><th>Ngày đặt</th><th>Trạng thái</th></tr>';
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($row['CustomerID']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['BookTitle']) . "</td>"; // Hiển thị tiêu đề sách
+                echo "<td style='text-align: left;'>" . htmlspecialchars($row['BookTitle']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                 echo "<td>" . number_format($row['TotalPrice'], 2) . " VNĐ</td>";
                 echo "<td>" . htmlspecialchars($row['DatePurchase']) . "</td>";
@@ -48,6 +48,7 @@ try {
     if (!isset($_SESSION['admin_logged_in']) && isset($_SESSION['id']) && isset($_SESSION['customer_logged_in'])) {
         $userId = intval($_SESSION['id']);
         echo "<h2>Đơn Hàng Của Bạn</h2>";
+        echo "<a style='margin-left: 40px;' class='return-button' href='index.php'>Quay lại trang chủ</a>";
         $stmt = $conn->prepare(
             "SELECT o.OrderID, o.DatePurchase, o.Quantity, o.TotalPrice, o.Status, b.BookTitle, c.CustomerName
              FROM `Orders` o
@@ -60,12 +61,12 @@ try {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            echo '<table class="table-orders">';
-            echo '<tr><th>Order ID</th><th>Book Title</th><th>Quantity</th><th>Total Price</th><th>Order Date</th><th>Status</th></tr>';
+            echo '<table style="margin-top: 30px;" class="table-orders">';
+            echo '<tr><th>Mã đơn hàng</th><th>Tên sách</th><th>Số lượng</th><th>Số tiền</th><th>Ngày đặt</th><th>Trạng thái</th></tr>';
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($row['OrderID']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['BookTitle']) . "</td>";
+                echo "<td style='text-align: left;'>" . htmlspecialchars($row['BookTitle']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['Quantity']) . "</td>";
                 echo "<td>" . number_format($row['TotalPrice'], 2) . " VNĐ</td>";
                 echo "<td>" . htmlspecialchars($row['DatePurchase']) . "</td>";

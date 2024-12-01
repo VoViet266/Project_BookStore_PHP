@@ -58,7 +58,7 @@
                 <form action="" method="post">
                     Số lượng: <input type="number" value="1" name="quantity" class="quantity-input" /><br>
                     <input type="hidden" value="<?php echo $row['BookID']; ?>" name="ac" />
-                    <input class="button" type="submit" value="Thêm vào giỏ hàng" />
+                    <input style="display: flex; margin: 15px auto;" class="button" type="submit" value="Thêm vào giỏ hàng" />
                 </form>
             </div>
         </li>

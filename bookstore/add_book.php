@@ -84,7 +84,7 @@ $conn->close();
 
             <button type="submit" name="add_book">Thêm sách</button>
 
-            <a class="return-button" href="admin.php">Quay lại trang admin</a>
+            <a class="return-button" href="admin.php">Quay lại trang quản lý</a>
 
         </div>
 
