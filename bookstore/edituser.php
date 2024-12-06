@@ -68,11 +68,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 
 	if (empty($_POST["password"])) {
-		$passwordErr = "Please enter your password";
-		$valid = false;
+		$hashed_password = $userPassword; 
 	} else {
 		$password = $_POST["password"];
-		$hashed_password = password_hash($password, PASSWORD_BCRYPT); // Hash the password
+		$hashed_password = password_hash($password, PASSWORD_BCRYPT); // Hash the new password
 	}
 
 	if ($valid) {
@@ -97,62 +96,61 @@ function test_input($data)
 
 
 <body>
-	<header style="height: 13%;">
-		<blockquote>
-			<a href="index.php"><img style="margin: -0.3% 0 -0 -1.2%;" src="image/logo.png"></a>
-		</blockquote>
-	</header>
-	<blockquote>
-		<div class="container">
-			<form method="post" action="edituser.php">
+    <header style="height: 13%;">
+        <blockquote>
+            <a href="index.php"><img style="margin: -0.3% 0 -0 -1.2%;" src="image/logo.png"></a>
+        </blockquote>
+    </header>
+    <blockquote>
+        <div class="container">
+            <form method="post" action="edituser.php">
 
-				<?php if (isset($_SESSION['message'])): ?>
-					<div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
-						<?= htmlspecialchars($_SESSION['message']['text']) ?>
-						<button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
-					</div>
-					<?php unset($_SESSION['message']); ?>
-				<?php endif; ?>
-				<center>
-					<h1>Chỉnh sửa thông tin</h1>
-				</center>
+                <?php if (isset($_SESSION['message'])): ?>
+                <div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
+                    <?= htmlspecialchars($_SESSION['message']['text']) ?>
+                    <button class="alert-close" onclick="this.parentElement.style.display='none';">×</button>
+                </div>
+                <?php unset($_SESSION['message']); ?>
+                <?php endif; ?>
+                <center>
+                    <h1>Chỉnh sửa thông tin</h1>
+                </center>
 
-				User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
-				Mật khẩu:<br><input type="password" name="password" placeholder="Mật khẩu mới">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
+                User Name:<br><input type="text" name="name" value="<?php echo $userName; ?>">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $nameErr; ?></span><br><br>
+                Mật khẩu:<br><input type="password" name="password" value="" placeholder="Mật khẩu mới">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $passwordErr; ?></span><br><br>
 
-				E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr; ?></span><br><br>
+                E-mail:<br><input type="text" name="email" value="<?php echo $custEmail; ?>">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $emailErr; ?></span><br><br>
 
-				Số điện thoại:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
+                Số điện thoại:<br><input type="text" name="contact" value="<?php echo $custPhone; ?>">
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $contactErr; ?></span><br><br>
 
-				<label>Giới tính:</label><br>
-				<input type="radio" name="gender" <?php if ($custGender == "Male")
+                <label>Giới tính:</label><br>
+                <input type="radio" name="gender" <?php if ($custGender == "Male")
 					echo "checked"; ?> value="Male">Male
-				<input type="radio" name="gender" <?php if ($custGender == "Female")
-					echo "checked"; ?>
-					value="Female">Female
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr; ?></span><br><br>
+                <input type="radio" name="gender" <?php if ($custGender == "Female")
+					echo "checked"; ?> value="Female">Female
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $genderErr; ?></span><br><br>
 
-				<label>Địa chỉ:</label><br>
-				<textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
-				<span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
-				<input class="button" type="submit" name="submit" value="Lưu" />
-				<input class="button" type="button" name="cancel" value="Hủy" onClick="window.location='index.php';" />
-			</form>
-		</div>
+                <label>Địa chỉ:</label><br>
+                <textarea name="address" cols="50" rows="5"><?php echo $custAddress; ?></textarea>
+                <span class="error" style="color: red; font-size: 0.8em;"><?php echo $addressErr; ?></span><br><br>
+                <input class="button" type="submit" name="submit" value="Lưu" />
+                <input class="button" type="button" name="cancel" value="Hủy" onClick="window.location='index.php';" />
+            </form>
+        </div>
 
-	</blockquote>
+    </blockquote>
 </body>
 <script>
-	window.onload = function () {
-		const alert = document.querySelector('.alert');
-		if (alert) {
-			setTimeout(function () {
-				alert.style.display = 'none';
-			}, 2000);
-		}
-	}
+window.onload = function() {
+    const alert = document.querySelector('.alert');
+    if (alert) {
+        setTimeout(function() {
+            alert.style.display = 'none';
+        }, 2000);
+    }
+}
 </script>
