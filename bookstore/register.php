@@ -132,7 +132,7 @@ function test_input($data)
                 <input class="button" type="submit" name="submitButton" value="Submit"
                     onClick="window.location='login.php';">
                 <input class="button" type="button" name="cancel" value="Cancel"
-                    onClick="window.location='login.php';" />
+                    onClick="window.location='index.php';" />
             </form>
         </div>
     </blockquote>
