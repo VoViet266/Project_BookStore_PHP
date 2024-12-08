@@ -9,18 +9,13 @@ if (!isset($_SESSION['admin_logged_in'])) {
 }
 $message = "";
 include 'header.php';
-// Database connection
 include 'connectDB.php';
-// Chức năng tìm kiếm
-$search = isset($_GET['search']) ? $_GET['search'] : '';
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
+
 $sql = "SELECT * FROM book";
 if (!empty($search)) {
-    $sql .= " WHERE BookTitle LIKE ? 
-              OR Author LIKE ? 
-              OR BookID LIKE ? 
-              OR Type LIKE ?";
+    $sql .= " WHERE BookTitle LIKE ? OR Author LIKE ? OR BookID LIKE ? OR Type LIKE ?";
 }
 $stmt = $conn->prepare($sql);
 
@@ -39,12 +34,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $price = $_POST['price'];
         $author = $_POST['author'];
         $type = $_POST['type'];
-        $image = $_POST['image'];
-        $sql = "UPDATE book SET BookTitle='$title', Price='$price', Author='$author', Type='$type', Image='$image' WHERE BookID=?";
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $uploadDir = 'image/'; 
+            $imageName = basename($_FILES['image']['name']);
+            $imagePath = $uploadDir . $imageName;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
+                $image = $imagePath;
+            } else {
+                $_SESSION['message'] = ["type" => "error", "text" => "Không thể upload ảnh."];
+                header("Location: admin.php");
+                exit();
+            }
+        } else {
+            $image = $_POST['current_image'];
+        }
+
+        $sql = "UPDATE book SET BookTitle=?, Price=?, Author=?, Type=?, Image=? WHERE BookID=?";
         $stmt = $conn->prepare($sql);
 
         if ($stmt) {
-            $stmt->bind_param("s", $id);
+            $stmt->bind_param("ssssss", $title, $price, $author, $type, $image, $id);
 
             if ($stmt->execute()) {
                 $_SESSION['message'] = ["type" => "success", "text" => "Cập nhật sách thành công!"];
@@ -57,17 +67,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $_SESSION['message'] = ["type" => "error", "text" => "Lỗi chuẩn bị câu lệnh SQL: {$conn->error}"];
         }
-    } elseif (isset($_POST['delete_book'])) {
-        $id = $_POST['BookID'];
+    }
+
+    if (isset($_POST['delete_book'])) {
+        $bookID = $_POST['BookID'];
+
+        // Xóa sách khỏi cơ sở dữ liệu
         $sql = "DELETE FROM book WHERE BookID=?";
         $stmt = $conn->prepare($sql);
+
         if ($stmt) {
-            $stmt->bind_param("s", $id);
+            $stmt->bind_param("s", $bookID);
 
             if ($stmt->execute()) {
                 $_SESSION['message'] = ["type" => "success", "text" => "Xóa sách thành công!"];
-                header("Location: admin.php");
-                exit();
             } else {
                 $_SESSION['message'] = ["type" => "error", "text" => "Lỗi khi xóa sách: {$stmt->error}"];
             }
@@ -75,9 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $_SESSION['message'] = ["type" => "error", "text" => "Lỗi chuẩn bị câu lệnh SQL: {$conn->error}"];
         }
+
+        header("Location: admin.php");
+        exit();
     }
 }
 ?>
+
 <div class="container">
     <?php if (isset($_SESSION['message'])): ?>
         <div class="alert alert-<?php echo $_SESSION['message']['type']; ?>">
@@ -117,46 +134,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <?php while ($row = $result->fetch_assoc()): ?>
                 <tr>
-                    <td><?php echo $row['BookID']; ?></td>
-                    <td><?php echo $row['BookTitle']; ?></td>
-                    <td><?php echo $row['Price']; ?></td>
-                    <td><?php echo $row['Author']; ?></td>
-                    <td><?php echo $row['Type']; ?></td>
-                    <td><img class="img_td" src="<?php echo $row['Image']; ?>" alt="Book Image"></td>
+                    <td><?php echo htmlspecialchars($row['BookID']); ?></td>
+                    <td><?php echo htmlspecialchars($row['BookTitle']); ?></td>
+                    <td><?php echo htmlspecialchars($row['Price']); ?></td>
+                    <td><?php echo htmlspecialchars($row['Author']); ?></td>
+                    <td><?php echo htmlspecialchars($row['Type']); ?></td>
+                    <td><img class="img_td" src="image/<?php echo basename($row['Image']); ?>" alt="Book Image"></td>
                     <td>
-                        <form method="post" class="inline-form" style="display: inline-block;" action="admin.php">
-                            <input type="text" name="title" value="<?php echo $row['BookTitle'] ?>" required>
-                            <input type="number" name="price" value="<?php echo $row['Price']; ?>" required>
-                            <input type="text" name="author" value="<?php echo $row['Author']; ?>" required>
-                            <input type="text" name="type" value="<?php echo $row['Type']; ?>" required>
-                            <input type="text" name="image" value="<?php echo $row['Image']; ?>" required>
-                            <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
-                            <button type="submit" name="edit_book">Edit</button>
+                        <form method="post" class="inline-form" style="display: inline-block;" action="admin.php" enctype="multipart/form-data">
+                            <input type="text" name="title" value="<?php echo htmlspecialchars($row['BookTitle']) ?>" required>
+                            <input type="number" name="price" value="<?php echo htmlspecialchars($row['Price']); ?>" required>
+                            <input type="text" name="author" value="<?php echo htmlspecialchars($row['Author']); ?>" required>
+                            <input type="text" name="type" value="<?php echo htmlspecialchars($row['Type']); ?>" required>
+                            <input type="file" name="image" accept="image/*">
+                            <input type="hidden" name="current_image" value="<?php echo htmlspecialchars($row['Image']); ?>">
+                            <input type="hidden" name="BookID" value="<?php echo htmlspecialchars($row['BookID']); ?>"> <br>
+                            <button type="submit" name="edit_book">Cập nhật</button>
                         </form>
-                        <form method="post" class="inline-btn" style="display: inline-block; " action="admin.php">
-                            <input type="hidden" name="BookID" value="<?php echo $row['BookID']; ?>">
-                            <button class="button-delete" type="submit" name="delete_book">Delete</button>
+                        <form method="post" class="inline-btn" style="display: inline-block;" action="admin.php">
+                            <input type="hidden" name="BookID" value="<?php echo htmlspecialchars($row['BookID']); ?>">
+                            <button class="button-delete" type="submit" name="delete_book" onclick="return confirm('Bạn có chắc chắn muốn xóa cuốn sách này?')">Xóa</button>
                         </form>
-
                     </td>
                 </tr>
             <?php endwhile; ?>
         </table>
     </div>
 </div>
-<script>
-    document.querySelectorAll('form button[name="delete_book"]').forEach(button => {
-        button.addEventListener('click', (e) => {
-            if (!confirm("Bạn có chắc chắn muốn xóa cuốn sách này?")) {
-                e.preventDefault();
-            }
-        });
-    });
-</script>
 
-
-<!-- Ẩn thông báo trong 2 giây -->
 <script>
+    // Auto-hide alert after 2 seconds
     window.onload = function() {
         const alert = document.querySelector('.alert');
         if (alert) {
